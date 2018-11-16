@@ -1,0 +1,56 @@
+.cart {
+  &__header {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+
+    span {
+      font-size: 14px;
+    }
+
+    .icon {
+      max-width: 24px;
+      margin-right: 10px;
+    }
+
+    .total {
+      margin-right: 7px;
+    }
+  }
+
+  &__main {
+
+    .list {
+      width: 100%;
+    }
+
+
+    .name {
+      text-align: left;
+    }
+
+    .image {
+      width: 20%;
+
+      img {
+        max-width: 50%;
+      }
+    }
+
+    .order-total {
+      text-align: center;
+      margin-top: 20px;
+      border-top: 1px dotted #cccccc;
+      padding: 25px 0 0;
+
+      span {
+        margin-right: 10px;
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

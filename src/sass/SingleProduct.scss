@@ -1,0 +1,19 @@
+.single-product {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+
+  .image {
+    flex: 1;
+    padding-right: 40px;
+  }
+
+  .meta {
+    width: 47%;
+    text-align: left;
+
+    .span {
+      font-size: 20px;
+    }
+  }
+}

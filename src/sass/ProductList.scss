@@ -1,0 +1,38 @@
+.product {
+  padding-top: 110px;
+
+  &__filter {
+    text-align: left;
+    padding: 20px 30px;
+
+    label {
+      margin-right: 7px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-flow: row wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__card {
+    width: 33.333%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 30px;
+  }
+}
+
+.card {
+  &__image {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+
+}
