@@ -3,6 +3,7 @@ import products from '../products';
 import { saveCartToStorage, getCartFromStorage, cleanStorageCart } from '../utils/utils'
 import '../sass/App.scss';
 import ProductsContainer from "./products/ProductsContainer.js";
+import Cart from './cart/CartContainer';
 import HeaderCart from "./cart/HeaderCart";
 import modalWindow from './modal/ModalWindow';
 import Checkout from "./checkout/Checkout";
@@ -12,7 +13,6 @@ class App extends Component {
         super();
 
         this.state = {
-            cart: {},
             showCart: false,
             checkoutStep: ''
         };
@@ -23,53 +23,33 @@ class App extends Component {
         this.handleCheckoutStep = this.handleCheckoutStep.bind(this);
     }
     componentDidMount() {
-        let cart = {};
         const cachedProducts = getCartFromStorage();
 
         if (products.length && cachedProducts) {
 
-            cachedProducts.forEach( cached => {
-                let [matchedProduct] = products.filter(product => product.id === cached.id);
-
-                matchedProduct['quantity'] = cached.qty;
-                cart[cached.id] = matchedProduct;
-            });
-
-            this.setState({cart});
+            Cart.initCart(products, cachedProducts);
+            this.forceUpdate();
         }
     }
 
     addToCart(prodId) {
 
-        let productToAdd = {...this.state.cart[prodId]};
+        const [productToAdd] = products.filter(item => item.id === prodId);
 
-        if (Object.keys(productToAdd).length) {
-            productToAdd.quantity += 1;
+        Cart.addToCart(productToAdd);
+        saveCartToStorage(Cart.cacheCart());
 
-        } else {
-
-            [productToAdd] = products.filter(item => item.id === prodId);
-            productToAdd['quantity'] = 1;
-        }
-
-        this.setState(state => {
-            const cart = {...state.cart, ...{[prodId]: productToAdd}};
-
-            saveCartToStorage(cart);
-
-            return {
-                cart
-            }
-        })
+        this.forceUpdate()
     }
 
     cleanCart() {
+        Cart.cleanCart();
         cleanStorageCart();
-        this.setState({cart: {}});
+        this.forceUpdate();
     }
 
     toggleCartModal() {
-        if (Object.keys(this.state.cart).length || this.state.showCart) {
+        if (Object.keys(Cart.getCart()).length || this.state.showCart) {
             this.setState({
                 showCart: !this.state.showCart,
                 checkoutStep: ''
@@ -88,13 +68,14 @@ class App extends Component {
 
   render() {
     const CheckoutModal = modalWindow()(Checkout);
+    const cart = Cart.getCart();
 
     return (
       <div className="App">
         <header className="header">
           <h1>Shop</h1>
             <HeaderCart
-                cart={this.state.cart}
+                cart={cart}
                 showCart={this.toggleCartModal}
             />
         </header>
@@ -104,7 +85,7 @@ class App extends Component {
         />
           <CheckoutModal
               show={this.state.showCart}
-              cart={this.state.cart}
+              cart={cart}
               onClose={this.toggleCartModal}
               handleCheckout={this.handleCheckoutStep}
               checkoutStep={this.state.checkoutStep}

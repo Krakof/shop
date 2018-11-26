@@ -1,15 +1,7 @@
 const cartStorageName = 'cart';
 
 export const saveCartToStorage = (cart) => {
-
-    const arr = Object.keys(cart).map(prodId => {
-        return {
-            id: prodId,
-            qty: cart[prodId].quantity
-        }
-    });
-
-    localStorage.setItem(cartStorageName, JSON.stringify(arr));
+    localStorage.setItem(cartStorageName, JSON.stringify(cart));
 };
 
 export const getCartFromStorage = () => {
